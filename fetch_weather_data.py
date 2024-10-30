@@ -4,7 +4,7 @@ import requests
 
 # Function to fetch weather data (assume this is defined)
 def fetch_weather_data():
-    API_KEY = 'f138eea9c9221b1b1ab9ce7078ca9e41'  # Replace with your actual API key
+    API_KEY = 'API_KEY'  # Replace with your actual API key
     CITY = 'Warszawa'         # Replace with your desired city
     URL = f'http://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}'
 
