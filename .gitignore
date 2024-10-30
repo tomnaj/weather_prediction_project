@@ -1,1 +1,2 @@
 data/weather_data.csv
+git rm --cached data/weather_data.csv
