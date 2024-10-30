@@ -1,2 +1,3 @@
 data/weather_data.csv
 git rm --cached data/weather_data.csv
+git commit -m "Update .gitignore to ignore weather_data.csv"
