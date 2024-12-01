@@ -1,14 +1,24 @@
 import os
 import pandas as pd
 import requests
+from dotenv import load_dotenv  # For loading environment variables
 
-# Function to fetch weather data (assume this is defined)
+# Load environment variables from a .env file
+load_dotenv()
+
+# Function to fetch weather data
 def fetch_weather_data():
-    API_KEY = 'f138eea9c9221b1b1ab9ce7078ca9e41'  # Replace with your actual API key
-    CITY = 'Warszawa'         # Replace with your desired city
+    API_KEY = os.getenv('WEATHER_API_KEY')  # Get the API key from the environment variables
+    if not API_KEY:
+        raise ValueError("API key not found. Set the WEATHER_API_KEY environment variable.")
+    
+    CITY = 'Warszawa'  # Replace with your desired city
     URL = f'http://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}'
 
     response = requests.get(URL)
+    if response.status_code != 200:
+        raise Exception(f"Failed to fetch weather data: {response.status_code}")
+    
     data = response.json()
 
     # Extract relevant data
@@ -18,18 +28,21 @@ def fetch_weather_data():
     return date, temperature
 
 # Fetch weather data
-date, temperature = fetch_weather_data()
+try:
+    date, temperature = fetch_weather_data()
+    # Create DataFrame with the new data
+    weather_data = pd.DataFrame({'Date': [date], 'Temperature': [temperature]})
 
-# Create DataFrame with the new data
-weather_data = pd.DataFrame({'Date': [date], 'Temperature': [temperature]})
+    # Define the file path
+    file_path = 'data/weather_data.csv'
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)  # Ensure directory exists
 
-# Define the file path
-file_path = 'data/weather_data.csv'
-
-# Check if the file already exists
-if not os.path.isfile(file_path):
-    # If it doesn't exist, write headers and data
-    weather_data.to_csv(file_path, mode='w', header=True, index=False)
-else:
-    # If it exists, append data without headers
-    weather_data.to_csv(file_path, mode='a', header=False, index=False)
+    # Check if the file already exists
+    if not os.path.isfile(file_path):
+        # If it doesn't exist, write headers and data
+        weather_data.to_csv(file_path, mode='w', header=True, index=False)
+    else:
+        # If it exists, append data without headers
+        weather_data.to_csv(file_path, mode='a', header=False, index=False)
+except Exception as e:
+    print(f"Error: {e}")
