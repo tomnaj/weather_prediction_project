@@ -14,7 +14,7 @@ This project uses historical weather data to predict future temperatures. It emp
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/weather_prediction_project.git
+   git clone https://github.com/tomnaj/weather_prediction_project.git
    cd weather_prediction_project
    ```
 
