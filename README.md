@@ -55,4 +55,3 @@ This project is licensed under the MIT License.
 
 ---
 
-Replace `"your-username"` with your GitHub username in the clone URL. This template should help you get started, and you can customize it further to suit your project’s needs!
