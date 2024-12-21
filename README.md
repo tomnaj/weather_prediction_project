@@ -1,4 +1,4 @@
-```markdown
+
 # Weather Prediction Project
 
 This project leverages historical and live weather data to forecast future temperatures using machine learning techniques. The application employs an ARIMA model for time series forecasting and provides an interactive user interface via Streamlit to visualize results effectively.
