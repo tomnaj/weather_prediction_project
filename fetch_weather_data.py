@@ -1,48 +1,58 @@
 import os
 import pandas as pd
 import requests
-from dotenv import load_dotenv  # For loading environment variables
+from dotenv import load_dotenv
 
-# Load environment variables from a .env file
+# Load environment variables
 load_dotenv()
 
-# Function to fetch weather data
-def fetch_weather_data():
-    API_KEY = os.getenv('WEATHER_API_KEY')  # Get the API key from the environment variables
+def fetch_weather_data(cities):
+    API_KEY = os.getenv('WEATHER_API_KEY')
     if not API_KEY:
         raise ValueError("API key not found. Set the WEATHER_API_KEY environment variable.")
-    
-    CITY = 'Warszawa'  # Replace with your desired city
-    URL = f'http://api.openweathermap.org/data/2.5/weather?q={CITY}&appid={API_KEY}'
 
-    response = requests.get(URL)
-    if response.status_code != 200:
-        raise Exception(f"Failed to fetch weather data: {response.status_code}")
-    
-    data = response.json()
+    data_list = []
 
-    # Extract relevant data
-    date = pd.to_datetime('now').strftime('%Y-%m-%d')  # Current date
-    temperature = data['main']['temp'] - 273.15  # Convert from Kelvin to Celsius
+    for city in cities:
+        URL = f'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}'
+        response = requests.get(URL)
+        if response.status_code != 200:
+            print(f"Failed to fetch weather data for {city}: {response.status_code}")
+            continue
 
-    return date, temperature
+        data = response.json()
 
-# Fetch weather data
-try:
-    date, temperature = fetch_weather_data()
-    # Create DataFrame with the new data
-    weather_data = pd.DataFrame({'Date': [date], 'Temperature': [temperature]})
+        # Extract relevant data
+        date = pd.to_datetime('now').strftime('%Y-%m-%d %H:%M:%S')
+        temperature = data['main']['temp'] - 273.15  # Convert Kelvin to Celsius
+        humidity = data['main']['humidity']
+        wind_speed = data['wind']['speed']
+        weather_description = data['weather'][0]['description']
 
-    # Define the file path
-    file_path = 'data/weather_data.csv'
-    os.makedirs(os.path.dirname(file_path), exist_ok=True)  # Ensure directory exists
+        # Append data to the list
+        data_list.append({
+            'City': city,
+            'Date': date,
+            'Temperature': temperature,
+            'Humidity': humidity,
+            'WindSpeed': wind_speed,
+            'Description': weather_description
+        })
 
-    # Check if the file already exists
-    if not os.path.isfile(file_path):
-        # If it doesn't exist, write headers and data
-        weather_data.to_csv(file_path, mode='w', header=True, index=False)
-    else:
-        # If it exists, append data without headers
-        weather_data.to_csv(file_path, mode='a', header=False, index=False)
-except Exception as e:
-    print(f"Error: {e}")
+    return data_list
+
+
+def save_live_weather_data(cities):
+    live_data = fetch_weather_data(cities)
+    live_weather_df = pd.DataFrame(live_data)
+
+    file_path = 'data/live_weather_data.csv'
+    os.makedirs(os.path.dirname(file_path), exist_ok=True)
+
+    # Save to CSV (overwrite to keep only the latest data)
+    live_weather_df.to_csv(file_path, index=False)
+
+# Example usage
+if __name__ == "__main__":
+    cities = ['Warszawa', 'Berlin', 'Paris', 'London', 'New York']
+    save_live_weather_data(cities)

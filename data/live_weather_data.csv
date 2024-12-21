@@ -1,0 +1,6 @@
+City,Date,Temperature,Humidity,WindSpeed,Description
+Warszawa,2024-12-21 15:13:00,3.980000000000018,75,3.09,clear sky
+Berlin,2024-12-21 15:13:00,6.300000000000011,85,7.15,overcast clouds
+Paris,2024-12-21 15:13:00,9.080000000000041,91,5.66,light rain
+London,2024-12-21 15:13:01,12.25,85,8.23,broken clouds
+New York,2024-12-21 15:13:01,-1.6299999999999955,79,7.72,haze
