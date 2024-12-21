@@ -92,4 +92,3 @@ Contributions are welcome! Open issues or submit pull requests to suggest improv
 ## License
 
 This project is licensed under the MIT License.
-```
