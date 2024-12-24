@@ -3,7 +3,7 @@ import pandas as pd
 import requests
 from dotenv import load_dotenv
 
-# Load environment variables
+
 load_dotenv()
 
 def fetch_weather_data(cities):
@@ -22,14 +22,14 @@ def fetch_weather_data(cities):
 
         data = response.json()
 
-        # Extract relevant data
+
         date = pd.to_datetime('now').strftime('%Y-%m-%d %H:%M:%S')
         temperature = data['main']['temp'] - 273.15  # Convert Kelvin to Celsius
         humidity = data['main']['humidity']
         wind_speed = data['wind']['speed']
         weather_description = data['weather'][0]['description']
 
-        # Append data to the list
+
         data_list.append({
             'City': city,
             'Date': date,
@@ -49,10 +49,10 @@ def save_live_weather_data(cities):
     file_path = 'data/live_weather_data.csv'
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
 
-    # Save to CSV (overwrite to keep only the latest data)
+
     live_weather_df.to_csv(file_path, index=False)
 
-# Example usage
+
 if __name__ == "__main__":
     cities = ['Warszawa', 'Berlin', 'Paris', 'London', 'New York']
     save_live_weather_data(cities)
