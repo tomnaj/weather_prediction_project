@@ -80,10 +80,6 @@ The application provides:
   - Historical temperatures in blue.
   - Forecasted temperatures in red.
 
-### Example Graph:
-![Model Evaluation Example](example_graph.png)
-
-> The graph above shows both historical and forecasted temperature trends with model accuracy metrics displayed for user reference.
 
 ## Contributing
 
